@@ -1,13 +1,7 @@
 import ListItem from './ListItem';
 
-function List() {
-	const tasks = [
-		{ id: 0, title: 'Выпить кофе' },
-		{ id: 1, title: 'Сделать React приложение' },
-		{ id: 2, title: 'Позавтракать' },
-	];
-
-	const render = tasks.map((task) => {
+function List(props) {
+	const render = props.data.map((task) => {
 		return <ListItem key={task.id} task={task} />;
 	});
 
@@ -17,7 +11,7 @@ function List() {
 		</li>
 	);
 
-	return <ul className="todo-list">{tasks.length > 0 ? render : emptyList}</ul>;
+	return <ul className="todo-list">{props.data.length > 0 ? render : emptyList}</ul>;
 }
 
 export default List;
