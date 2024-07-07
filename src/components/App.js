@@ -19,7 +19,7 @@ class App extends React.Component {
     ],
   };
 
-	// важные задачи
+  // важные задачи
   onToggleImportant = (id) => {
     this.setState((state) => {
       // 1. находим индекс задачи в массиве todoData
@@ -39,7 +39,7 @@ class App extends React.Component {
     });
   };
 
-	// выполненые задачи
+  // выполненые задачи
   onToggleDone = (id) => {
     this.setState((state) => {
       // 1. находим индекс задачи в массиве todoData
@@ -59,9 +59,28 @@ class App extends React.Component {
     });
   };
 
-	// удаление задачи
-	deleteItem = (id) => {
-		this.setState((state) => {
+  // добавление новой задачи
+  addItem = (title) => {
+    this.setState((state) => {
+      // 1. получаем последний id из массива todoData и увеличиваем его на 1
+      const ID = state.todoData[state.todoData.length - 1].id + 1;
+      // 2. формируем новый элемент списка
+      const newItem = {
+        id: ID,
+        title: title,
+        important: false,
+        done: false,
+      };
+      // 3. формируем новый массив [] с новым значением
+      return {
+        todoData: [...state.todoData, newItem],
+      };
+    });
+  };
+
+  // удаление задачи
+  deleteItem = (id) => {
+    this.setState((state) => {
       // 1. находим индекс задачи в массиве todoData
       const index = state.todoData.findIndex((el) => el.id === id);
 
@@ -72,8 +91,8 @@ class App extends React.Component {
       return {
         todoData: [...part1, ...part2],
       };
-		})
-	}
+    });
+  };
 
   render() {
     return (
@@ -84,9 +103,9 @@ class App extends React.Component {
           data={this.state.todoData}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
-					deleteItem={this.deleteItem}
+          deleteItem={this.deleteItem}
         />
-        <Footer />
+        <Footer addItem={this.addItem} />
       </div>
     );
   }
