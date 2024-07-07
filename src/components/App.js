@@ -5,12 +5,57 @@ import List from "./List";
 import Footer from "./Footer";
 
 class App extends React.Component {
+  // state
   state = {
     todoData: [
-      { id: 0, title: "Выпить кофе" },
-      { id: 1, title: "Сделать React приложение" },
-      { id: 2, title: "Позавтракать" },
+      { id: 0, title: "Выпить кофе", important: false, done: false },
+      {
+        id: 1,
+        title: "Сделать React приложение",
+        important: true,
+        done: false,
+      },
+      { id: 2, title: "Позавтракать", important: false, done: false },
     ],
+  };
+
+  onToggleImportant = (id) => {
+    this.setState((state) => {
+      // 1. находим индекс задачи в массиве todoData
+      const index = state.todoData.findIndex((el) => el.id === id);
+
+      // 2. формируем новый массив {} но с обратным значением important
+      const oldItem = state.todoData[index];
+      const newItem = { ...oldItem, important: !oldItem.important };
+
+      // 3. формируем новый массив [] с новым значением
+      const part1 = state.todoData.slice(0, index);
+      const part2 = state.todoData.slice(index + 1);
+
+      return {
+        todoData: [...part1, newItem, ...part2],
+      };
+    });
+  };
+
+  onToggleDone = (id) => {
+    console.log("onToggleDone");
+    this.setState((state) => {
+      // 1. находим индекс задачи в массиве todoData
+      const index = state.todoData.findIndex((el) => el.id === id);
+
+      // 2. формируем новый массив {} но с обратным значением important
+      const oldItem = state.todoData[index];
+      const newItem = { ...oldItem, done: !oldItem.done, important: false };
+
+      // 3. формируем новый массив [] с новым значением
+      const part1 = state.todoData.slice(0, index);
+      const part2 = state.todoData.slice(index + 1);
+
+      return {
+        todoData: [...part1, newItem, ...part2],
+      };
+    });
   };
 
   render() {
@@ -18,7 +63,11 @@ class App extends React.Component {
       <div>
         <Header />
         <Search />
-        <List data={this.state.todoData}/>
+        <List
+          data={this.state.todoData}
+          onToggleImportant={this.onToggleImportant}
+          onToggleDone={this.onToggleDone}
+        />
         <Footer />
       </div>
     );
