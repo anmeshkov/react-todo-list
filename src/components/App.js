@@ -19,6 +19,7 @@ class App extends React.Component {
     ],
   };
 
+	// важные задачи
   onToggleImportant = (id) => {
     this.setState((state) => {
       // 1. находим индекс задачи в массиве todoData
@@ -38,8 +39,8 @@ class App extends React.Component {
     });
   };
 
+	// выполненые задачи
   onToggleDone = (id) => {
-    console.log("onToggleDone");
     this.setState((state) => {
       // 1. находим индекс задачи в массиве todoData
       const index = state.todoData.findIndex((el) => el.id === id);
@@ -58,6 +59,22 @@ class App extends React.Component {
     });
   };
 
+	// удаление задачи
+	deleteItem = (id) => {
+		this.setState((state) => {
+      // 1. находим индекс задачи в массиве todoData
+      const index = state.todoData.findIndex((el) => el.id === id);
+
+      // 2. формируем новый массив [] без удаленного элемента
+      const part1 = state.todoData.slice(0, index);
+      const part2 = state.todoData.slice(index + 1);
+
+      return {
+        todoData: [...part1, ...part2],
+      };
+		})
+	}
+
   render() {
     return (
       <div>
@@ -67,6 +84,7 @@ class App extends React.Component {
           data={this.state.todoData}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
+					deleteItem={this.deleteItem}
         />
         <Footer />
       </div>

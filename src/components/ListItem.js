@@ -33,7 +33,13 @@ class ListItem extends React.Component {
           >
             Важное
           </button>
-          <button role="button" className="btn btn-outline-danger btn-sm">
+          <button
+            onClick={() => {
+              this.props.deleteItem(this.props.task.id);
+            }}
+            role="button"
+            className="btn btn-outline-danger btn-sm"
+          >
             Удалить
           </button>
         </div>

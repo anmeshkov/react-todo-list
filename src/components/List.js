@@ -8,6 +8,7 @@ function List(props) {
         task={task}
         onToggleImportant={props.onToggleImportant}
 				onToggleDone={props.onToggleDone}
+				deleteItem={props.deleteItem}
       />
     );
   });
