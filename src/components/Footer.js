@@ -1,29 +1,44 @@
 import React from "react";
 
 class Footer extends React.Component {
+  state = {
+    taskTitle: "",
+  };
 
-	state = {
-		taskTitle: ''
-	}
+  onInputChange = (event) => {
+    this.setState((state) => {
+      return {
+        taskTitle: event.target.value,
+      };
+    });
+  };
 
-	onInputChange = (event) => {
-		this.setState((state) => {
-			return {
-				taskTitle: event.target.value
-			}
-		})
-	}
+  onFormSubmit = (event) => {
+    event.preventDefault();
 
-	onFormSubmit = (event) => {
-		event.preventDefault()
-		this.props.addItem(this.state.taskTitle)
-	}
+    const title = this.state.taskTitle.trim();
+
+    // проверяем, что введено не пустое значение и добавляем таску
+    if (title !== "") {
+      this.props.addItem(title);
+    }
+
+    // очищаем поле ввода
+    this.setState((state) => {
+      return {
+        taskTitle: "",
+      };
+    });
+
+  };
 
   render() {
     return (
       <footer>
         <form onSubmit={this.onFormSubmit} className="footer">
-          <input onChange={this.onInputChange}
+          <input
+            onChange={this.onInputChange}
+            value={this.state.taskTitle}
             type="text"
             placeholder="Что необходимо сделать"
             className="form-control me-2"
