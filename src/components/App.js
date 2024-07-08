@@ -17,6 +17,7 @@ class App extends React.Component {
       },
       { id: 2, title: "Позавтракать", important: false, done: false },
     ],
+    term: "",
   };
 
   // важные задачи
@@ -94,13 +95,39 @@ class App extends React.Component {
     });
   };
 
+  // поиск по фразе
+  search = (items, term) => {
+    if (term.trim().length === 0) {
+      return items;
+    }
+
+    return items.filter((item) => {
+      if (item.title.indexOf(term.trim()) > -1) {
+        return true;
+      }
+    });
+  };
+
+  changeTerm = (term) => {
+    console.log('CHANGE TERM');
+    // this.setState((state) => {
+    //   return {
+    //     term: term
+    //   }
+    // })
+  }
+
   render() {
+    const visibleItems = this.search(this.state.todoData, this.state.term);
+
     return (
       <div>
         <Header />
-        <Search />
+        <Search 
+          changeTerm={this.changeTerm}
+        />
         <List
-          data={this.state.todoData}
+          data={visibleItems}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
           deleteItem={this.deleteItem}

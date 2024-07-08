@@ -1,4 +1,4 @@
-function List() {
+function Search(props) {
     return (
 		<div className="search">
 			<input type="text" placeholder="введите фразу для поиска" className="form-control me-2" />
@@ -17,4 +17,4 @@ function List() {
 	);
 }
 
-export default List;
+export default Search;
