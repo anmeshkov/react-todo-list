@@ -108,13 +108,13 @@ class App extends React.Component {
     });
   };
 
+  // изменение поисковой строки
   changeTerm = (term) => {
-    console.log('CHANGE TERM');
-    // this.setState((state) => {
-    //   return {
-    //     term: term
-    //   }
-    // })
+    this.setState((state) => {
+      return {
+        term: term
+      }
+    })
   }
 
   render() {
@@ -125,6 +125,7 @@ class App extends React.Component {
         <Header />
         <Search 
           changeTerm={this.changeTerm}
+          term={this.state.term}
         />
         <List
           data={visibleItems}
