@@ -1,6 +1,6 @@
-import React from "react";
+import {Component} from "react";
 
-class Search extends React.Component {
+class Search extends Component {
   changeInput = (event) => {
     const inputValue = event.target.value;
     this.props.changeTerm(inputValue);

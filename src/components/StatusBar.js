@@ -1,6 +1,6 @@
-import React from "react";
+import {Component} from "react";
 
-class StatusBar extends React.Component {
+class StatusBar extends Component {
   onButoonClick = (event) => {
     const status = event.target.value;
     this.props.changeStatus(status);

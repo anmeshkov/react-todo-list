@@ -1,11 +1,11 @@
-import React from "react";
+import { Component } from "react";
 import Header from "./Header";
 import Search from "./Search";
 import StatusBar from "./StatusBar";
 import List from "./List";
 import Footer from "./Footer";
 
-class App extends React.Component {
+class App extends Component {
   // state
   state = {
     todoData: [
@@ -22,44 +22,35 @@ class App extends React.Component {
     status: "all", // all, active, done
   };
 
-  // важные задачи
-  onToggleImportant = (id) => {
+  // переключение значений
+  toggleParam = (id, param) => {
     this.setState((state) => {
-      // 1. находим индекс задачи в массиве todoData
-      const index = state.todoData.findIndex((el) => el.id === id);
-
-      // 2. формируем новый массив {} но с обратным значением important
-      const oldItem = state.todoData[index];
-      const newItem = { ...oldItem, important: !oldItem.important };
-
-      // 3. формируем новый массив [] с новым значением
-      const part1 = state.todoData.slice(0, index);
-      const part2 = state.todoData.slice(index + 1);
+      const newArray = state.todoData.map((task) => {
+        // task.id === id ? { ...task, [param]: !task[param] } : task
+        if (task.id === id) {
+          return param === "done"
+            ? { ...task, [param]: !task[param], important: !task.important }
+            : { ...task, [param]: !task[param] };
+          // return { ...task, [param]: !task[param] };
+        } else {
+          return task;
+        }
+      });
 
       return {
-        todoData: [...part1, newItem, ...part2],
+        todoData: newArray,
       };
     });
   };
 
+  // важные задачи
+  onToggleImportant = (id) => {
+    this.toggleParam(id, "important");
+  };
+
   // выполненые задачи
   onToggleDone = (id) => {
-    this.setState((state) => {
-      // 1. находим индекс задачи в массиве todoData
-      const index = state.todoData.findIndex((el) => el.id === id);
-
-      // 2. формируем новый массив {} но с обратным значением important
-      const oldItem = state.todoData[index];
-      const newItem = { ...oldItem, done: !oldItem.done, important: false };
-
-      // 3. формируем новый массив [] с новым значением
-      const part1 = state.todoData.slice(0, index);
-      const part2 = state.todoData.slice(index + 1);
-
-      return {
-        todoData: [...part1, newItem, ...part2],
-      };
-    });
+    this.toggleParam(id, "done");
   };
 
   // добавление новой задачи
@@ -84,15 +75,9 @@ class App extends React.Component {
   // удаление задачи
   deleteItem = (id) => {
     this.setState((state) => {
-      // 1. находим индекс задачи в массиве todoData
-      const index = state.todoData.findIndex((el) => el.id === id);
-
-      // 2. формируем новый массив [] без удаленного элемента
-      const part1 = state.todoData.slice(0, index);
-      const part2 = state.todoData.slice(index + 1);
-
+      // формируем новый массив [] без удаленного элемента
       return {
-        todoData: [...part1, ...part2],
+        todoData: state.todoData.filter((el) => el.id !== id),
       };
     });
   };
@@ -165,7 +150,10 @@ class App extends React.Component {
         <Header />
         <div className="search">
           <Search changeTerm={this.changeTerm} term={this.state.term} />
-          <StatusBar changeStatus={this.changeStatus} status={this.state.status}/>
+          <StatusBar
+            changeStatus={this.changeStatus}
+            status={this.state.status}
+          />
         </div>
         <List
           data={filterByStatusItems}

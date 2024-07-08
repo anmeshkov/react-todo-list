@@ -1,15 +1,16 @@
-/* eslint-disable jsx-a11y/no-redundant-roles */
-import React from "react";
+import { Component } from "react";
 
-class ListItem extends React.Component {
+class ListItem extends Component {
   render() {
+    const { task, onToggleDone, onToggleImportant, deleteItem } = this.props;
+
     let classNames = "todo-item";
 
-    if (this.props.task.important) {
+    if (task.important) {
       classNames += " important";
     }
 
-    if (this.props.task.done) {
+    if (task.done) {
       classNames += " done";
     }
 
@@ -17,16 +18,16 @@ class ListItem extends React.Component {
       <li className={classNames}>
         <span
           onClick={() => {
-            this.props.onToggleDone(this.props.task.id);
+            onToggleDone(task.id);
           }}
           className="todo-item-text"
         >
-          {this.props.task.title}
+          {task.title}
         </span>
         <div className="btn-group">
           <button
             onClick={() => {
-              this.props.onToggleImportant(this.props.task.id);
+              onToggleImportant(task.id);
             }}
             role="button"
             className="btn btn-outline-dark btn-sm"
@@ -35,7 +36,7 @@ class ListItem extends React.Component {
           </button>
           <button
             onClick={() => {
-              this.props.deleteItem(this.props.task.id);
+              deleteItem(task.id);
             }}
             role="button"
             className="btn btn-outline-danger btn-sm"
