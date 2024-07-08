@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import Search from "./Search";
+import StatusBar from "./StatusBar";
 import List from "./List";
 import Footer from "./Footer";
 
@@ -18,6 +19,7 @@ class App extends React.Component {
       { id: 2, title: "Позавтракать", important: false, done: false },
     ],
     term: "",
+    status: "all", // all, active, done
   };
 
   // важные задачи
@@ -112,23 +114,61 @@ class App extends React.Component {
   changeTerm = (term) => {
     this.setState((state) => {
       return {
-        term: term
-      }
-    })
-  }
+        term: term,
+      };
+    });
+  };
+
+  // фильтрация по статусу
+  filterByStatus = (items, status) => {
+    switch (status) {
+      case "all":
+        return items;
+      case "active":
+        return items.filter((item) => {
+          if (item.done === false) {
+            return true;
+          }
+        });
+      case "done":
+        return items.filter((item) => {
+          if (item.done === true) {
+            return true;
+          }
+        });
+      default:
+        return items;
+    }
+  };
+
+  // изменение статуса заявки
+  changeStatus = (status) => {
+    this.setState((state) => {
+      return {
+        status: status,
+      };
+    });
+  };
 
   render() {
-    const visibleItems = this.search(this.state.todoData, this.state.term);
+    const filterBySearchItems = this.search(
+      this.state.todoData,
+      this.state.term
+    );
+    const filterByStatusItems = this.filterByStatus(
+      filterBySearchItems,
+      this.state.status
+    );
 
     return (
       <div>
         <Header />
-        <Search 
-          changeTerm={this.changeTerm}
-          term={this.state.term}
-        />
+        <div className="search">
+          <Search changeTerm={this.changeTerm} term={this.state.term} />
+          <StatusBar changeStatus={this.changeStatus} status={this.state.status}/>
+        </div>
         <List
-          data={visibleItems}
+          data={filterByStatusItems}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
           deleteItem={this.deleteItem}
